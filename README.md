@@ -1,4 +1,6 @@
-Complete the `MeldValid` function inside `Assets/Scripts/MyController.cs` satisfying the rules outlined in the three challenges.
+Hareeg is a Middle Eastern card game where players try to get rid of their cards by melding them. The first player to empty their hand wins.
+
+Your goal in this project is to complete the `MeldValid` function inside `Assets/Scripts/MyController.cs` that checks whether a group of selected cards constitutes a valid meld group.
 
 ---
 
