@@ -31,7 +31,7 @@ Ace can be at top or bottom:
 
 ---
 
-Challenge 2: **Joker melding**
+Challenge 2: **Joker melding** (optional)
 
 ```
 Joker can replace any card to complete a meld:
@@ -41,7 +41,7 @@ Joker can replace any card to complete a meld:
 
 ---
 
-Challenge 3: **Multi-joker melding**
+Challenge 3: **Multi-joker melding** (optional)
 
 ```
 Multiple jokers can be used to complete a meld:
