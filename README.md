@@ -6,7 +6,7 @@ Your goal in this project is to complete the `MeldValid` function inside `Assets
 
 **Card representation:**
 ```
-Integer between 0 and 51
+Integer between 0 and 51 (a total of 52 cards: 4 suits with 13 cards each)
 - 0-12:  A♣ 2♣ 3♣ … J♣ Q♣ K♣
 - 13-25: A♦ 2♦ 3♦ … J♦ Q♦ K♦
 - 26-38: A♠ 2♠ 3♠ … J♠ Q♠ K♠
