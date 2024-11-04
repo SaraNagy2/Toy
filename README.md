@@ -21,10 +21,11 @@ Challenge 1: **Basic melding**
 
 ```
 Must be 3-5 cards and be either:
-- A series of cards of the same suit: ♦2 ♦3 ♦4
-- Cards with the same rank (number or letter) but different suits: K♦ K♠ K♥
+1) Cards with the same rank (number or letter) but different suits: K♦ K♠ K♥
 
-Ace can be at top or bottom: 
+2) A series of cards of the same suit: ♦2 ♦3 ♦4
+
+Note: ace can be at top or bottom: 
 - A♥ 2♥ 3♥ 
 - A♥ K♥ Q♥
 ```
