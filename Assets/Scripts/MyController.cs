@@ -10,18 +10,122 @@ using UnityEngine.UI;
 public class MyController : MonoBehaviour
 {
     // Write code inside the MeldValid function. You don't need to touch any other part of the script
+    enum Suits { clubs = 0, diamonds = 1, spades = 2, hearts = 3 };
 
     private bool MeldValid(List<int> cards)
     {
-        // START CODING HERE
-        return false;
+        if (cards.Count < 3 || cards.Count > 5)
+        {
+            return false;
+        }
+        List<KeyValuePair<int, Suits>> cardsList = new List<KeyValuePair<int, Suits>>();
+        for (int i = 0; i < cards.Count; i++)
+        {
+            if (0 <= cards[i] && cards[i] <= 12)
+            {
+                cardsList.Add(new KeyValuePair<int, Suits>(cards[i], Suits.clubs));
+            }
+            if (13 <= cards[i] && cards[i] <= 25)
+            {
+                cardsList.Add(new KeyValuePair<int, Suits>(cards[i] - 13, Suits.diamonds));
+            }
+            if (26 <= cards[i] && cards[i] <= 38)
+            {
+                cardsList.Add(new KeyValuePair<int, Suits>(cards[i] - 13*2, Suits.spades));
+            }
+            if (39 <= cards[i] && cards[i] <= 51)
+            {
+                cardsList.Add(new KeyValuePair<int, Suits>(cards[i] - 13*3 , Suits.hearts));
+            }
+        }
+
+        ///
+        //List<int> cards_2 = cards.ToList();
+        //int[] count = new int[4];
+
+        //// Same Suits
+        //for (int i = 0; i < cards.Count; i++)
+        //{
+        //    if (0 <= cards[i] && cards[i] <= 12 )
+        //    {
+        //        count[0]++;
+        //    }
+        //    if (13  <= cards[i] && cards[i] <= 25)
+        //    {
+        //        cards_2[i] -= 13;
+        //        count[1]++;
+        //    }
+        //    if (26 <= cards[i] && cards[i] <= 38)
+        //    {
+        //        cards_2[i] -= 13*2;
+        //        count[2]++;
+        //    }
+        //    if (39 <= cards[i] && cards[i] <= 51)
+        //    {
+        //        cards_2[i] -= 13 * 3;
+        //        count[3]++;
+        //    }
+        //    //if (cards[i] != cards[i+1])
+        //    //{
+        //    //    flag = false;
+        //    //}
+        //}
+
+        //for (int i = 0; i < cards.Count; i++)
+        //{
+        //   if (cards_2[i] == cards_2[i+1])
+        //    {
+
+        //    }
+        //}
+
+        //for (int i = 0; i < count.Length; i++)
+        //{
+        //    if (count[i] == cards.Count)
+        //    {
+        //        return true;
+
+        //    }
+        //}
+
+        // Same Rank
+        //for (int i = 0; i < cards_2.Count-1; i++)
+        //{
+        //    if (cards_2[i] != cards_2[i + 1])
+        //    {
+        //        return false;
+        //    }
+        //}
+
+        for (int i = 0; i < cardsList.Count - 1; i++)
+        {
+            if (cardsList[i].Key != cardsList[i+1].Key)
+            {
+                return false;
+            }
+            if (cardsList[i].Value == cardsList[i + 1].Value)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     #region Initialization
     [SerializeField] private Sprite[] suitSprites;
 
     public static MyController instance;
-
+    /**
+     * 
+         *
+         *Card representation:
+    Integer between 0 and 51
+    0-12:    A♣️ 2♣️ 3♣️ … J♣️ Q♣️ K♣️
+    13-25:  A♦️ 2♦️ 3♦️ … J♦️ Q♦️ K♦️
+    26-38: A♠️ 2♠️ 3♠️ … J♠️ Q♠️ K♠️
+    39-51: A♥️ 2♥️ 3♥️ … J♥️ Q♥️ K♥️
+    
+     **/
     private Transform cards, meld, loading;
     private Transform canvas;
     private List<int> selectedCards = new();
