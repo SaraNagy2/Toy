@@ -65,7 +65,7 @@ public class MyController : MonoBehaviour
         while (true)
         {
             int elapsed = (int)(DateTime.UtcNow.Subtract(startTime).TotalMilliseconds);
-            loading.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Analyzing" +  new string('.', (elapsed/1000)%3)+ " (" + (elapsed/1000).ToString("n0")+"s)";
+            loading.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Analyzing" +  new string('.', 1+(elapsed/1000)%3)+ " (" + (elapsed/1000).ToString("n0")+"s)";
             yield return new WaitForEndOfFrame();
         }
     }
