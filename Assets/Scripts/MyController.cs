@@ -18,6 +18,8 @@ public class MyController : MonoBehaviour
         {
             return false;
         }
+        bool flag = true;
+
         List<KeyValuePair<int, Suits>> cardsList = new List<KeyValuePair<int, Suits>>();
         for (int i = 0; i < cards.Count; i++)
         {
@@ -37,77 +39,44 @@ public class MyController : MonoBehaviour
             {
                 cardsList.Add(new KeyValuePair<int, Suits>(cards[i] - 13*3 , Suits.hearts));
             }
+
         }
 
-        ///
-        //List<int> cards_2 = cards.ToList();
-        //int[] count = new int[4];
-
-        //// Same Suits
-        //for (int i = 0; i < cards.Count; i++)
-        //{
-        //    if (0 <= cards[i] && cards[i] <= 12 )
-        //    {
-        //        count[0]++;
-        //    }
-        //    if (13  <= cards[i] && cards[i] <= 25)
-        //    {
-        //        cards_2[i] -= 13;
-        //        count[1]++;
-        //    }
-        //    if (26 <= cards[i] && cards[i] <= 38)
-        //    {
-        //        cards_2[i] -= 13*2;
-        //        count[2]++;
-        //    }
-        //    if (39 <= cards[i] && cards[i] <= 51)
-        //    {
-        //        cards_2[i] -= 13 * 3;
-        //        count[3]++;
-        //    }
-        //    //if (cards[i] != cards[i+1])
-        //    //{
-        //    //    flag = false;
-        //    //}
-        //}
-
-        //for (int i = 0; i < cards.Count; i++)
-        //{
-        //   if (cards_2[i] == cards_2[i+1])
-        //    {
-
-        //    }
-        //}
-
-        //for (int i = 0; i < count.Length; i++)
-        //{
-        //    if (count[i] == cards.Count)
-        //    {
-        //        return true;
-
-        //    }
-        //}
-
-        // Same Rank
-        //for (int i = 0; i < cards_2.Count-1; i++)
-        //{
-        //    if (cards_2[i] != cards_2[i + 1])
-        //    {
-        //        return false;
-        //    }
-        //}
-
+        //check rank (case 1)
+        cardsList.Sort((pair1, pair2) => pair1.Value.CompareTo(pair2.Value));
         for (int i = 0; i < cardsList.Count - 1; i++)
         {
-            if (cardsList[i].Key != cardsList[i+1].Key)
+            if (cardsList[i].Key != cardsList[i + 1].Key)
             {
-                return false;
+                flag = false;
+                break;
             }
             if (cardsList[i].Value == cardsList[i + 1].Value)
             {
+                flag = false;
+                break;
+            }
+        }
+        if (flag)
+        {
+            return true;
+        }
+
+        //check suit (case 2)
+        cardsList.Sort((pair1, pair2) => pair1.Key.CompareTo(pair2.Key));
+        for (int i = 0; i < cardsList.Count - 1; i++)
+        {
+            if (cardsList[i].Value != cardsList[i + 1].Value)
+            {
+                return false;
+            }
+            if (cardsList[i].Key+1 != cardsList[i+1].Key)
+            {
                 return false;
             }
         }
+
+        
         return true;
     }
 
