@@ -29,7 +29,14 @@ public class MyController : MonoBehaviour
 
         if (CheckCase_1(cardsList))
         {
-            return true;
+            if (cards.Count >4)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
 
         //check suit (case 2)
