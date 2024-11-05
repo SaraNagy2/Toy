@@ -63,6 +63,7 @@ public class MyController : MonoBehaviour
         }
 
         //check suit (case 2)
+        flag = true;
         cardsList.Sort((pair1, pair2) => pair1.Key.CompareTo(pair2.Key));
         for (int i = 0; i < cardsList.Count - 1; i++)
         {
@@ -70,13 +71,38 @@ public class MyController : MonoBehaviour
             {
                 return false;
             }
-            if (cardsList[i].Key+1 != cardsList[i+1].Key)
+        }
+        for (int i = 0; i < cardsList.Count - 1; i++)
+        {
+            if (cardsList[i].Key + 1 != cardsList[i + 1].Key)
+            {
+                flag = false;
+                break;
+            }
+        }
+        if (flag)
+        {
+            return true;
+        }
+        //Check Ace
+        if (cardsList[0].Key == 0)
+        {
+            cardsList[0] = new KeyValuePair<int, Suits>(14, cardsList[0].Value);
+        }
+        else
+        {
+            return false;
+        }
+
+        cardsList.Sort((pair1, pair2) => pair1.Key.CompareTo(pair2.Key));
+        for (int i = 0; i < cardsList.Count - 1; i++)
+        {
+            if (cardsList[i].Key + 1 != cardsList[i + 1].Key)
             {
                 return false;
             }
         }
 
-        
         return true;
     }
 
