@@ -19,6 +19,11 @@ public class MyController : MonoBehaviour
             return false;
         }
         bool flag = true;
+        int JokerCount = 0;
+        int JokerCount_BackUp = 0;
+        int Missing = 0;
+
+        KeyValuePair<int, Suits> Temp = new KeyValuePair<int, Suits>();
 
         List<KeyValuePair<int, Suits>> cardsList = new List<KeyValuePair<int, Suits>>();
         for (int i = 0; i < cards.Count; i++)
@@ -27,20 +32,25 @@ public class MyController : MonoBehaviour
             {
                 cardsList.Add(new KeyValuePair<int, Suits>(cards[i], Suits.clubs));
             }
-            if (13 <= cards[i] && cards[i] <= 25)
+            else if (13 <= cards[i] && cards[i] <= 25)
             {
                 cardsList.Add(new KeyValuePair<int, Suits>(cards[i] - 13, Suits.diamonds));
             }
-            if (26 <= cards[i] && cards[i] <= 38)
+            else if (26 <= cards[i] && cards[i] <= 38)
             {
-                cardsList.Add(new KeyValuePair<int, Suits>(cards[i] - 13*2, Suits.spades));
+                cardsList.Add(new KeyValuePair<int, Suits>(cards[i] - 13 * 2, Suits.spades));
             }
-            if (39 <= cards[i] && cards[i] <= 51)
+            else if (39 <= cards[i] && cards[i] <= 51)
             {
-                cardsList.Add(new KeyValuePair<int, Suits>(cards[i] - 13*3 , Suits.hearts));
+                cardsList.Add(new KeyValuePair<int, Suits>(cards[i] - 13 * 3, Suits.hearts));
             }
-
+            else
+            {
+                JokerCount++;
+            }
         }
+
+        JokerCount_BackUp = JokerCount;
 
         //check rank (case 1)
         cardsList.Sort((pair1, pair2) => pair1.Value.CompareTo(pair2.Value));
@@ -51,7 +61,7 @@ public class MyController : MonoBehaviour
                 flag = false;
                 break;
             }
-            if (cardsList[i].Value == cardsList[i + 1].Value)
+            else if (cardsList[i].Value == cardsList[i + 1].Value)
             {
                 flag = false;
                 break;
@@ -74,16 +84,24 @@ public class MyController : MonoBehaviour
         }
         for (int i = 0; i < cardsList.Count - 1; i++)
         {
+            if (cardsList[i].Key == cardsList[i + 1].Key)
+            {
+                return false;
+            }
             if (cardsList[i].Key + 1 != cardsList[i + 1].Key)
             {
-                flag = false;
-                break;
+                Missing = Missing +(cardsList[i+1].Key- cardsList[i].Key)-1;
+                //flag = false;
+                //break;
             }
         }
-        if (flag)
+        if (Missing<=JokerCount)
         {
             return true;
         }
+
+
+        Missing = 0;
         //Check Ace
         if (cardsList[0].Key == 0)
         {
@@ -97,13 +115,22 @@ public class MyController : MonoBehaviour
         cardsList.Sort((pair1, pair2) => pair1.Key.CompareTo(pair2.Key));
         for (int i = 0; i < cardsList.Count - 1; i++)
         {
-            if (cardsList[i].Key + 1 != cardsList[i + 1].Key)
+            if (cardsList[i].Key == cardsList[i + 1].Key)
             {
                 return false;
             }
-        }
+            if (cardsList[i].Key + 1 != cardsList[i + 1].Key)
+            {
+                Missing = Missing + (cardsList[i + 1].Key - cardsList[i].Key) - 1;
 
-        return true;
+                //return false;
+            }
+        }
+        if (Missing <= JokerCount)
+        {
+            return true;
+        }
+        return false;
     }
 
     #region Initialization
