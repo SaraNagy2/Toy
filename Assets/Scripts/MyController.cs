@@ -18,14 +18,55 @@ public class MyController : MonoBehaviour
         {
             return false;
         }
-        bool flag = true;
-        int JokerCount = 0;
-        int JokerCount_BackUp = 0;
-        int Missing = 0;
 
-        KeyValuePair<int, Suits> Temp = new KeyValuePair<int, Suits>();
+        int JokerCount = 0;
 
         List<KeyValuePair<int, Suits>> cardsList = new List<KeyValuePair<int, Suits>>();
+
+        ListCards(cards, ref cardsList, ref JokerCount);
+
+        //check rank (case 1)
+
+        if (CheckCase_1(cardsList))
+        {
+            return true;
+        }
+
+        //check suit (case 2)
+
+        for (int i = 0; i < cardsList.Count - 1; i++)
+        {
+            if (cardsList[i].Value != cardsList[i + 1].Value)
+            {
+                return false;
+            }
+        }
+
+        if (CheckCase_2(cardsList,  JokerCount))
+        {
+            return true;
+        }
+
+        //Check Ace
+        if (cardsList[0].Key == 0)
+        {
+            cardsList[0] = new KeyValuePair<int, Suits>(14, cardsList[0].Value);
+        }
+        else
+        {
+            return false;
+        }
+
+        if (CheckCase_2(cardsList, JokerCount))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    void ListCards(List<int> cards, ref List<KeyValuePair<int, Suits>> cardsList, ref int JokerCount) 
+    {
         for (int i = 0; i < cards.Count; i++)
         {
             if (0 <= cards[i] && cards[i] <= 12)
@@ -49,70 +90,29 @@ public class MyController : MonoBehaviour
                 JokerCount++;
             }
         }
+    }
 
-        JokerCount_BackUp = JokerCount;
-
-        //check rank (case 1)
+    bool CheckCase_1(List<KeyValuePair<int, Suits>> cardsList) 
+    {
         cardsList.Sort((pair1, pair2) => pair1.Value.CompareTo(pair2.Value));
         for (int i = 0; i < cardsList.Count - 1; i++)
         {
             if (cardsList[i].Key != cardsList[i + 1].Key)
             {
-                flag = false;
-                break;
+                return false;
             }
             else if (cardsList[i].Value == cardsList[i + 1].Value)
             {
-                flag = false;
-                break;
-            }
-        }
-        if (flag)
-        {
-            return true;
-        }
-
-        //check suit (case 2)
-        flag = true;
-        cardsList.Sort((pair1, pair2) => pair1.Key.CompareTo(pair2.Key));
-        for (int i = 0; i < cardsList.Count - 1; i++)
-        {
-            if (cardsList[i].Value != cardsList[i + 1].Value)
-            {
                 return false;
             }
         }
-        for (int i = 0; i < cardsList.Count - 1; i++)
-        {
-            if (cardsList[i].Key == cardsList[i + 1].Key)
-            {
-                return false;
-            }
-            if (cardsList[i].Key + 1 != cardsList[i + 1].Key)
-            {
-                Missing = Missing +(cardsList[i+1].Key- cardsList[i].Key)-1;
-                //flag = false;
-                //break;
-            }
-        }
-        if (Missing<=JokerCount)
-        {
-            return true;
-        }
-
-
-        Missing = 0;
-        //Check Ace
-        if (cardsList[0].Key == 0)
-        {
-            cardsList[0] = new KeyValuePair<int, Suits>(14, cardsList[0].Value);
-        }
-        else
-        {
-            return false;
-        }
-
+        return true;
+    }
+    bool CheckCase_2(List<KeyValuePair<int, Suits>> cardsList, int JokerCount)
+    {
+        int Missing = 0;
         cardsList.Sort((pair1, pair2) => pair1.Key.CompareTo(pair2.Key));
+
         for (int i = 0; i < cardsList.Count - 1; i++)
         {
             if (cardsList[i].Key == cardsList[i + 1].Key)
@@ -122,32 +122,28 @@ public class MyController : MonoBehaviour
             if (cardsList[i].Key + 1 != cardsList[i + 1].Key)
             {
                 Missing = Missing + (cardsList[i + 1].Key - cardsList[i].Key) - 1;
-
-                //return false;
             }
         }
+
         if (Missing <= JokerCount)
         {
             return true;
         }
         return false;
     }
-
-    #region Initialization
-    [SerializeField] private Sprite[] suitSprites;
-
-    public static MyController instance;
     /**
-     * 
-         *
-         *Card representation:
+    Card representation:
     Integer between 0 and 51
     0-12:    A♣️ 2♣️ 3♣️ … J♣️ Q♣️ K♣️
     13-25:  A♦️ 2♦️ 3♦️ … J♦️ Q♦️ K♦️
     26-38: A♠️ 2♠️ 3♠️ … J♠️ Q♠️ K♠️
     39-51: A♥️ 2♥️ 3♥️ … J♥️ Q♥️ K♥️
-    
      **/
+    #region Initialization
+    [SerializeField] private Sprite[] suitSprites;
+
+    public static MyController instance;
+
     private Transform cards, meld, loading;
     private Transform canvas;
     private List<int> selectedCards = new();
